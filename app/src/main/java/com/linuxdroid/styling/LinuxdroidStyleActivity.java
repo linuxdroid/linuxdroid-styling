@@ -1,4 +1,4 @@
-package com.termux.styling;
+package com.linuxdroid.styling;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TermuxStyleActivity extends Activity {
+public class LinuxdroidStyleActivity extends Activity {
 
     private static final String DEFAULT_FILENAME = "Default";
 
@@ -68,7 +68,7 @@ public class TermuxStyleActivity extends Activity {
         colorSpinner.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog dialog = new AlertDialog.Builder(TermuxStyleActivity.this).setAdapter(colorAdapter, new DialogInterface.OnClickListener() {
+                final AlertDialog dialog = new AlertDialog.Builder(LinuxdroidStyleActivity.this).setAdapter(colorAdapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         copyFile(colorAdapter.getItem(which), true);
@@ -95,7 +95,7 @@ public class TermuxStyleActivity extends Activity {
         fontSpinner.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                final AlertDialog dialog = new AlertDialog.Builder(TermuxStyleActivity.this).setAdapter(fontAdapter, new DialogInterface.OnClickListener() {
+                final AlertDialog dialog = new AlertDialog.Builder(LinuxdroidStyleActivity.this).setAdapter(fontAdapter, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         copyFile(fontAdapter.getItem(which), false);
@@ -171,12 +171,12 @@ public class TermuxStyleActivity extends Activity {
         try {
             final String assetsFolder = colors ? "colors" : "fonts";
 
-            Context context = createPackageContext("com.termux", Context.CONTEXT_IGNORE_SECURITY);
+            Context context = createPackageContext("com.linuxdroid", Context.CONTEXT_IGNORE_SECURITY);
             File homeDir = new File(context.getFilesDir(), "home");
-            File termuxDir = new File(homeDir, ".termux");
-            File destinationFile = new File(termuxDir, outputFile);
-            if (!(termuxDir.isDirectory() || termuxDir.mkdirs()))
-                throw new RuntimeException("Cannot create termux dir=" + termuxDir.getAbsolutePath());
+            File linuxdroidDir = new File(homeDir, ".linuxdroid");
+            File destinationFile = new File(linuxdroidDir, outputFile);
+            if (!(linuxdroidDir.isDirectory() || linuxdroidDir.mkdirs()))
+                throw new RuntimeException("Cannot create linuxdroid dir=" + linuxdroidDir.getAbsolutePath());
 
             // Fix for if the user has messed up with chmod:
             destinationFile.setWritable(true);
@@ -204,12 +204,12 @@ public class TermuxStyleActivity extends Activity {
             }
 
             // Note: Must match constant in Term#onCreate():
-            final String ACTION_RELOAD = "com.termux.app.reload_style";
+            final String ACTION_RELOAD = "com.linuxdroid.app.reload_style";
             Intent executeIntent = new Intent(ACTION_RELOAD);
             executeIntent.putExtra(ACTION_RELOAD, colors ? "colors" : "font");
             sendBroadcast(executeIntent);
         } catch (Exception e) {
-            Log.w("termux", "Failed to write " + outputFile, e);
+            Log.w("linuxdroid", "Failed to write " + outputFile, e);
             String message = getResources().getString(R.string.writing_failed) + e.getMessage();
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
         }
